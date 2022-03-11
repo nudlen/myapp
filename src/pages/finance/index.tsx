@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Card } from 'antd';
+import { Card, Space, Button, Modal } from 'antd';
 import type { ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 
@@ -52,6 +52,28 @@ const columns: ProColumns<TableListItem>[] = [
     title: '价格',
     dataIndex: 'money',
   },
+  {
+    title: '操作',
+    valueType: 'option',
+    fixed: 'right',
+    render: () => {
+      return (
+        <Space>
+          <a>编辑</a>
+          <a
+            onClick={() => {
+              Modal.confirm({
+                title: '确认',
+                content: '是否确定删除',
+              });
+            }}
+          >
+            删除
+          </a>
+        </Space>
+      );
+    },
+  },
 ];
 
 const mockData = [
@@ -83,7 +105,19 @@ const Finance: React.FC = () => {
   return (
     <PageContainer>
       <Card>
-        <ProTable columns={columns} toolBarRender={false} dataSource={mockData} />
+        <ProTable
+          columns={columns}
+          toolBarRender={() => {
+            return [
+              <Space key="1">
+                <Button type="primary" style={{ left: 0 }}>
+                  新建
+                </Button>
+              </Space>,
+            ];
+          }}
+          dataSource={mockData}
+        />
       </Card>
     </PageContainer>
   );
